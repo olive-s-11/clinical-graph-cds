@@ -20,3 +20,7 @@ data/
 # OS
 .DS_Store
 Thumbs.db
+
+# Large clinical datasets
+clinical-data/raw/
+clinical-data/processed/

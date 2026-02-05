@@ -1,0 +1,13 @@
+{
+  "name": "clinical-graph-cds",
+  "build": {
+    "dockerfile": "../docker/Dockerfile.base"
+  },
+  "runArgs": [
+    "--gpus=all"
+  ],
+  "extensions": [
+    "ms-python.python",
+    "ms-azuretools.vscode-docker"
+  ]
+}
