@@ -1,6 +1,7 @@
 # Raw & processed clinical datasets
 clinical-data/raw/
 clinical-data/processed/
+results/
 
 # Large TSV / CSV files
 *.tsv
@@ -28,7 +29,3 @@ data/
 # OS
 .DS_Store
 Thumbs.db
-
-# Large clinical datasets
-clinical-data/raw/
-clinical-data/processed/
