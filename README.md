@@ -16,3 +16,15 @@ and GPU-accelerated reasoning.
 - RAPIDS / cuGraph
 - Docker
 - WSL2 (Ubuntu 22.04)
+
+## Dataset
+
+Source: Comparative Toxicogenomics Database (CTD)
+
+Full dataset size: ~9GB  
+Not included due to GitHub size limits.
+
+A representative sample (50k rows) is included for:
+- Reproducibility
+- Demonstration
+- Development testing

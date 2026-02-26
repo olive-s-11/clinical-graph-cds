@@ -2,6 +2,7 @@
 clinical-data/raw/
 clinical-data/processed/
 results/
+neo4j/import/
 
 # Large TSV / CSV files
 *.tsv
@@ -29,3 +30,6 @@ data/
 # OS
 .DS_Store
 Thumbs.db
+
+!clinical-data/demo/
+!clinical-data/demo/ctd_gene_disease_sample.tsv
