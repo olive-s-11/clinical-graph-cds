@@ -3,6 +3,8 @@ clinical-data/raw/
 clinical-data/processed/
 results/
 neo4j/import/
+graph.html
+neo4j/
 
 # Large TSV / CSV files
 *.tsv
