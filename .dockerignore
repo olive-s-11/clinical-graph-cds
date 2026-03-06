@@ -1,0 +1,20 @@
+# Neo4j volumes
+neo4j/data
+neo4j/import
+neo4j/logs
+
+# Datasets
+clinical-data/
+data/
+
+# Results
+results/
+
+# Python
+.venv
+__pycache__
+*.pyc
+
+# Git
+.git
+.gitignore
