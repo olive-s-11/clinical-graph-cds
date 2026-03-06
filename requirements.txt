@@ -3,4 +3,3 @@ py2neo
 pandas
 networkx
 plotly
-neo4j
