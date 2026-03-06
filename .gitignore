@@ -20,8 +20,8 @@ env/
 .ipynb_checkpoints/
 
 # Data
-data/
-*.csv
+data/*
+!data/graph_demo.csv
 *.tsv
 
 # Docker
