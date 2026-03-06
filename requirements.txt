@@ -1,4 +1,6 @@
 streamlit
-neo4j
+py2neo
 pandas
-pyvis
+networkx
+plotly
+neo4j
