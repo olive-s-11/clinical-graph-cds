@@ -1,45 +1,91 @@
 import streamlit as st
-import pandas as pd
-import networkx as nx
+from neo4j import GraphDatabase
+from pyvis.network import Network
+import streamlit.components.v1 as components
 
-st.title("Graph-based Clinical Decision Support Demo")
+# ---------------------------
+# Neo4j Connection
+# ---------------------------
 
-# Load dataset (NO HEADER)
-file_path = "data/graph/gene_disease_edges_demo.tsv"
+URI = "bolt://localhost:7687"
+USERNAME = "neo4j"
+PASSWORD = "password"
 
-df = pd.read_csv(
-    file_path,
-    sep="\t",
-    header=None,
-    names=["gene", "disease", "score"]
-)
+driver = GraphDatabase.driver(URI, auth=(USERNAME, PASSWORD))
 
-st.write("Dataset preview")
-st.dataframe(df.head())
 
-# Build graph
-G = nx.from_pandas_edgelist(
-    df,
-    source="gene",
-    target="disease",
-    edge_attr="score",
-    create_using=nx.DiGraph()
-)
+# ---------------------------
+# Query Neo4j
+# ---------------------------
 
-# Input
-gene = st.text_input("Enter Gene ID")
+def find_diseases_from_gene(gene_id):
 
-if gene:
+    query = """
+    MATCH (g:Gene {gene_id:$gene_id})-[r:INVOLVED_IN]->(d:Disease)
+    RETURN g.gene_id AS gene,
+           d.name AS disease,
+           r.score AS score
+    ORDER BY score DESC
+    LIMIT 20
+    """
 
-    # convert to int because dataset gene IDs are integers
-    try:
-        gene = int(gene)
-    except:
-        st.error("Gene ID must be a number")
-        st.stop()
+    with driver.session() as session:
+        result = session.run(query, gene_id=gene_id)
+        return [record.data() for record in result]
 
-    if gene not in G:
-        st.error("Gene not found in graph")
+
+# ---------------------------
+# Graph Visualization
+# ---------------------------
+
+def visualize_paths(results):
+
+    net = Network(height="600px", width="100%", notebook=False)
+
+    for r in results:
+
+        gene = r["gene"]
+        disease = r["disease"]
+        score = r["score"]
+
+        net.add_node(gene, label=gene, color="blue")
+        net.add_node(disease, label=disease, color="red")
+
+        net.add_edge(gene, disease, value=score)
+
+    net.save_graph("graph.html")
+
+    HtmlFile = open("graph.html", "r", encoding="utf-8")
+    components.html(HtmlFile.read(), height=600)
+
+
+# ---------------------------
+# Streamlit UI
+# ---------------------------
+
+st.title("Clinical Graph-based CDS")
+
+st.write("Explore gene–disease relationships using a graph database.")
+
+gene_input = st.text_input("Enter Gene ID")
+
+if st.button("Find Diseases"):
+
+    results = find_diseases_from_gene(gene_input)
+
+    if not results:
+
+        st.warning("No diseases found for this gene.")
+
     else:
-        diseases = list(G.neighbors(gene))
-        st.write("Associated Diseases:", diseases)
+
+        st.subheader("Ranked Diseases")
+
+        for r in results:
+            st.write(
+                f"Disease: {r['disease']} | Score: {r['score']}"
+            )
+
+        st.subheader("Graph Visualization")
+
+        visualize_paths(results)
