@@ -6,13 +6,13 @@
 
 ## Overview
 
-[2–3 sentences: the problem, e.g. why clinicians need to see *why* a system suggests a disease or drug link, and what this project does about it.]
+An interactive, high-performance biomedical Clinical Decision Support (CDS) system leveraging heterogeneous Knowledge Graphs, PyTorch Geometric GPU acceleration, and traceable explainable AI (XAI) to assist clinicians in exploring complex multi-hop interactions between symptoms, diseases, genes, and therapeutic drugs.
 
 ## Features
 
 - Explore diseases and related chemicals/drugs by traversing a knowledge graph built from CTD
 - Every result comes with the **graph path** behind it, so the reasoning can be inspected
-- GPU-accelerated reasoning with PyTorch Geometric [add speed-up vs CPU if measured]
+- GPU-accelerated reasoning with PyTorch Geometric
 - Interactive Streamlit interface
 - Fully containerized setup with Docker
 
@@ -26,8 +26,6 @@ flowchart LR
     D --> E[Explanation paths]
     E --> F[Streamlit UI]
 ```
-
-[Adjust the diagram to match your actual pipeline, then describe each stage in a sentence or two.]
 
 ## Graph schema
 
