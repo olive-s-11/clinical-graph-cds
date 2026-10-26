@@ -1,30 +1,83 @@
 # Clinical Graph-Based Decision Support System
 
-A graph-based clinical decision support system that assists clinicians by
-exploring diseases and drugs from symptoms, with explainable graph paths
-and GPU-accelerated reasoning.
+> Explainable clinical decision support over a biomedical knowledge graph, with GPU-accelerated reasoning.
 
-## Key Features (Planned)
-- Symptom → disease → drug graph traversal
-- Explainable path-based reasoning
-- GPU-accelerated graph analytics (RAPIDS / cuGraph)
-- Containerized, reproducible setup (Docker + WSL2)
+> ⚠️ **Research prototype.** This system has not been clinically validated and must not be used for medical decisions or advice.
 
-## Tech Stack
-- Python
-- NVIDIA CUDA
-- RAPIDS / cuGraph
-- Docker
-- WSL2 (Ubuntu 22.04)
+## Overview
 
-## Dataset
+[2–3 sentences: the problem, e.g. why clinicians need to see *why* a system suggests a disease or drug link, and what this project does about it.]
 
-Source: Comparative Toxicogenomics Database (CTD)
+## Features
 
-Full dataset size: ~9GB  
-Not included due to GitHub size limits.
+- Explore diseases and related chemicals/drugs by traversing a knowledge graph built from CTD
+- Every result comes with the **graph path** behind it, so the reasoning can be inspected
+- GPU-accelerated reasoning with PyTorch Geometric [add speed-up vs CPU if measured]
+- Interactive Streamlit interface
+- Fully containerized setup with Docker
 
-A representative sample (50k rows) is included for:
-- Reproducibility
-- Demonstration
-- Development testing
+## How it works
+
+```mermaid
+flowchart LR
+    A[CTD data<br/>TSV files] --> B[Import scripts<br/>Cypher / aura_import.py]
+    B --> C[(Neo4j<br/>knowledge graph)]
+    C --> D[Reasoning<br/>PyTorch Geometric, GPU]
+    D --> E[Explanation paths]
+    E --> F[Streamlit UI]
+```
+
+[Adjust the diagram to match your actual pipeline, then describe each stage in a sentence or two.]
+
+## Graph schema
+
+| Node type | Description | Count |
+|---|---|---|
+| Disease | [..] | [..] |
+| Chemical / Drug | [..] | [..] |
+| Gene | [..] | [..] |
+
+| Relationship | Connects | Meaning |
+|---|---|---|
+| [..] | [..] | [..] |
+
+## Results
+
+| Metric | Value |
+|---|---|
+| [e.g. top-k accuracy / path quality / query latency] | [..] |
+| [GPU vs CPU speed-up] | [..] |
+
+## Tech stack
+
+Python · Neo4j · PyTorch Geometric · Streamlit · Docker · NVIDIA CUDA · WSL2 (Ubuntu 22.04) RAPIDS/cuGraph
+
+## Getting started
+
+### Prerequisites
+- Docker and Docker Compose
+- NVIDIA GPU with CUDA [version] for GPU reasoning (CPU fallback: no)
+- Neo4j Aura account or local Neo4j
+
+### Run with Docker
+```bash
+git clone https://github.com/olive-s-11/clinical-graph-cds.git
+cd clinical-graph-cds
+cp .env.example .env        # add your Neo4j credentials
+docker compose up --build
+```
+Then open http://localhost:8501
+
+### Load the data
+```bash
+python scripts/aura_import.py
+```
+
+## Data
+
+Source: [Comparative Toxicogenomics Database (CTD)](https://ctdbase.org/) (full dataset ~9 GB, not included because of GitHub size limits). A 50k-row sample is in `data/sample/` for reproducibility and demos. To use the full data, download it from CTD. Please cite CTD as described on their site.
+
+## Limitations
+
+- Built on CTD curation, so coverage and bias follow that source
+- Not validated with clinicians
